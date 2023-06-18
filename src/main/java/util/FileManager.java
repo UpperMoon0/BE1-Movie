@@ -13,7 +13,6 @@ public class FileManager {
             // Create the parent directories if they don't exist
             file.getParentFile().mkdirs();
 
-
             // Create the file
             if (file.createNewFile()) {
                 if (UI.getIsDebug()) 
