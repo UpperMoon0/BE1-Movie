@@ -1,9 +1,16 @@
 
 package ui;
 
+import util.FileManager;
+
 public class UI {
+    private static boolean isDebug = true;
     public static void main(String[] args) {
-        System.out.println("hehe");
+        FileManager.createFile("data/userData.txt");
+    }
+
+    public static boolean getIsDebug() {
+        return isDebug;
     }
     
 }
