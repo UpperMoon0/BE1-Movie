@@ -1,8 +1,11 @@
 package util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 import ui.UI;
 
@@ -31,7 +34,7 @@ public class FileManager {
 
         return null;
     }
-    public void writeToFile (String filePath, String dataOfUser) {
+    public static void writeToFile (String filePath, String dataOfUser) {
         try {
         File file = new File(filePath);       
         file.getParentFile().mkdirs();      
@@ -55,4 +58,33 @@ public class FileManager {
         }
         }
     }
+    public static void readFromFile (String pathname) {
+        File file = new File(pathname);
+        if (!file.exists()) {
+            System.out.println("FIle not exist!!!");
+            System.out.close();
+        }
+        try {   
+            FileReader fileReader = new FileReader(file);
+            BufferedReader bufferReader = new BufferedReader(fileReader);
+            String line;
+            while((line = bufferReader.readLine()) != null) {
+                System.out.println(line);
+            }
+            bufferReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public static String inputString (String massage) {
+        Scanner sc = new Scanner(System.in);
+        do {
+            System.out.println(massage);
+            String value = sc.nextLine();
+            if (!value.isEmpty()) {
+                return value;
+            }
+        } while (true);
+    }
+    
 }

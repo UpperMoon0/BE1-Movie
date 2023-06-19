@@ -5,9 +5,7 @@ import util.FileManager;
 
 public class UI {
     private static final boolean isDebug = true;
-    public static void main(String[] args) {
-        String filePath = "data/User.txt";
-        File createdFile = FileManager.createFile(filePath);
+    public static void main(String[] args) {       
         RoleMenu.roleMenu();
     }
 
