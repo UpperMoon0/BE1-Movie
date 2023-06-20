@@ -1,14 +1,21 @@
 package ui;
 
-import java.io.File;
-import util.FileManager;
+import java.util.Scanner;
 
 public class UI {
-    private static final boolean isDebug = true;
+    // Scanner
+    public static Scanner sc = new Scanner(System.in);
+
+    // Set this to true to enable debug mode
+    private static final boolean isDebug = false;
+    
+    // Main function
     public static void main(String[] args) {       
         RoleMenu.roleMenu();
+        sc.close();
     }
 
+    // Getters
     public static boolean getIsDebug() {
         return isDebug;
     }

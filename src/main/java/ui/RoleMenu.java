@@ -19,12 +19,11 @@ public class RoleMenu {
                 System.out.print("Your choice: ");
                 choice = 0;
                 try {
-                    Scanner sc = new Scanner(System.in);
-                    choice = sc.nextInt();
+                    UI.sc = new Scanner(System.in);
+                    choice = UI.sc.nextInt();
 
                     if (choice > 0 && choice < 4) {
                         inputSuccess = true;
-                        sc.close();
                     }
                     else
                         System.out.println("Invalid choice, please try again!");
@@ -35,6 +34,7 @@ public class RoleMenu {
 
             switch(choice) {
                 case 1:
+                    UserLoginMenu.userLoginMenu();
                     chooseSuccess = true;
                     break;
                 case 2:
