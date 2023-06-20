@@ -1,6 +1,5 @@
 package ui;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class RoleMenu {
@@ -27,7 +26,7 @@ public class RoleMenu {
                     }
                     else
                         System.out.println("Invalid choice, please try again!");
-                } catch (InputMismatchException e) {
+                } catch (Exception e) {
                     System.out.println("Invalid choice, please try again!");
                 }
             } while (!inputSuccess);

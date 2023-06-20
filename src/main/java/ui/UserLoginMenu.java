@@ -1,7 +1,6 @@
 package ui;
 
 import core.User;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import util.FileManager;
@@ -34,7 +33,7 @@ public class UserLoginMenu {
                     }
                     else
                         System.out.println("Invalid choice, please try again!");
-                } catch (InputMismatchException e) {
+                } catch (Exception e) {
                     System.out.println("Invalid choice, please try again!");
                 }
             } while (!inputSuccess);
