@@ -2,6 +2,8 @@ package ui;
 
 import java.util.Scanner;
 
+import javax.xml.crypto.Data;
+
 public class UI {
     // Scanner
     public static Scanner sc = new Scanner(System.in);
@@ -11,6 +13,7 @@ public class UI {
     
     // Main function
     public static void main(String[] args) {       
+        DataInit.dataInit();
         RoleMenu.roleMenu();
         sc.close();
     }
