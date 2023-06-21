@@ -1,52 +1,40 @@
 package ui;
 
-import java.util.Scanner;
+public class RoleMenu extends Menu {
+    // Data initialization
+    protected static void dataInit() {
+        options.clear();
+        title = "Choose a role:";
+        options.add("User");
+        options.add("Admin");
+        options.add("Exit");
+    }
 
-public class RoleMenu {
-    public static void roleMenu() {
-        boolean chooseSuccess = false;
+    // Choice effect
+    protected static void choiceEffect(int choice) {
+        switch(choice) {
+            case 1:
+                UserLoginMenu.menu();
+                chooseSuccess = true;
+                break;
+            case 2:
+                AdminLoginMenu.menu();
+                chooseSuccess = true;
+                break;
+            case 3:
+                System.out.println("Goodbye!");
+                chooseSuccess = true;
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Menu
+    public static void menu() {
+        dataInit();
         do {
-            int choice;
-            boolean inputSuccess = false;
-            
-            System.out.println("Choose your role:");
-            System.out.println("1: User");
-            System.out.println("2: Admin");
-            System.out.println("3: Exit");
-
-            do {
-                System.out.print("Your choice: ");
-                choice = 0;
-                try {
-                    UI.sc = new Scanner(System.in);
-                    choice = UI.sc.nextInt();
-
-                    if (choice > 0 && choice < 4) {
-                        inputSuccess = true;
-                    }
-                    else
-                        System.out.println("Invalid choice, please try again!");
-                } catch (Exception e) {
-                    System.out.println("Invalid choice, please try again!");
-                }
-            } while (!inputSuccess);
-
-            switch(choice) {
-                case 1:
-                    UserLoginMenu.userLoginMenu();
-                    chooseSuccess = true;
-                    break;
-                case 2:
-                    AdminLoginMenu.adminLoginMenu();
-                    chooseSuccess = true;
-                    break;
-                case 3:
-                    System.out.println("Goodbye!");
-                    chooseSuccess = true;
-                    break;
-                default:
-                    break;
-            }
+            choiceEffect(getChoice());
         } while (!chooseSuccess);
     }
 }

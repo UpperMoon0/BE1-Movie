@@ -14,7 +14,7 @@ public class UI {
     // Main function
     public static void main(String[] args) {       
         DataInit.dataInit();
-        RoleMenu.roleMenu();
+        RoleMenu.menu();
         sc.close();
     }
 

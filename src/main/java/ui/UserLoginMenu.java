@@ -1,63 +1,51 @@
 package ui;
 
 import core.User;
-import java.util.Scanner;
 
 import util.FileManager;
 import util.InputManager;
 
 
-public class UserLoginMenu {
-    // User login / register menu
-    public static void userLoginMenu() {
-        boolean chooseSuccess = false;
+public class UserLoginMenu extends Menu {
+    // Data initialization
+    protected static void dataInit() {
+        options.clear();
+        title = "Choose an action:";
+        options.add("Login");
+        options.add("Register");
+        options.add("Back to role menu");
+        options.add("Exit");
+    }
+
+    // Choice effect
+    protected static void choiceEffect(int choice) {
+        switch(choice) {
+            case 1:
+                login();
+                chooseSuccess = true;
+                break;
+            case 2:
+                register();
+                chooseSuccess = true;
+                break;
+            case 3:
+                RoleMenu.menu();
+                chooseSuccess = true;
+                break;
+            case 4:
+                System.out.println("Goodbye!");
+                chooseSuccess = true;
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Menu
+    public static void menu() {
+        dataInit();
         do {
-            int choice;
-            boolean inputSuccess = false;
-            
-            System.out.println("Choose an action:");
-            System.out.println("1: Login");
-            System.out.println("2: Register");
-            System.out.println("3: Back to role menu");
-            System.out.println("4: Exit");
-
-            do {
-                System.out.print("Your choice: ");
-                choice = 0;
-                try {
-                    UI.sc = new Scanner(System.in);
-                    choice = UI.sc.nextInt();
-
-                    if (choice > 0 && choice < 5) {
-                        inputSuccess = true;
-                    }
-                    else
-                        System.out.println("Invalid choice, please try again!");
-                } catch (Exception e) {
-                    System.out.println("Invalid choice, please try again!");
-                }
-            } while (!inputSuccess);
-
-            switch(choice) {
-                case 1:
-                    login();
-                    chooseSuccess = true;
-                    break;
-                case 2:
-                    register();
-                    chooseSuccess = true;
-                    break;
-                case 3:
-                    RoleMenu.roleMenu();
-                    chooseSuccess = true;
-                    break;
-                case 4:
-                    System.out.println("Goodbye!");
-                    chooseSuccess = true;
-                    break;
-                default:
-                    break;
-            }
+            choiceEffect(getChoice());
         } while (!chooseSuccess);
     }
 
