@@ -2,7 +2,7 @@ package ui;
 
 import java.util.Scanner;
 
-import javax.xml.crypto.Data;
+import util.DataInit;
 
 public class UI {
     // Scanner
