@@ -1,16 +1,17 @@
 
 package ui;
 
-import core.User;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import core.Admin;
 import util.FileManager;
 import util.InputManager;
 
 
 public class AdminLoginMenu {
-     // Admin login / register menu
-    public static void userLoginMenu() {
+    // Admin login / register menu
+    public static void adminLoginMenu() {
         boolean chooseSuccess = false;
         do {
             int choice;
@@ -68,10 +69,10 @@ public class AdminLoginMenu {
             username = InputManager.inputString("Enter your username:"),
             password = InputManager.inputString("Enter your password:");
 
-        User user = new User(username, password);
+        Admin admin = new Admin(username, password);
         
         // Check if username and password match
-        if (FileManager.checkUsernamePasswordMatch(user.toString())) {
+        if (FileManager.checkUsernamePasswordMatch(admin.toString())) {
             System.out.println("Login successful!");
         } else {
             System.out.println("Username or password is incorrect!");
@@ -80,7 +81,7 @@ public class AdminLoginMenu {
 
     // Register 
     public static void register() {
-        User user;
+        Admin admin;
         String 
             username,
             password;
@@ -98,8 +99,8 @@ public class AdminLoginMenu {
         password = InputManager.inputPassword("Enter your password:");
 
         // Write to file
-        user = new User(username, password);
-        FileManager.writeToFile("data/adminData.txt", user.toString() + "\n");
+        admin = new Admin(username, password);
+        FileManager.writeToFile("data/adminData.txt", admin.toString() + "\n");
         System.out.println("Register successful!");    
     }
 }

@@ -37,6 +37,7 @@ public class RoleMenu {
                     chooseSuccess = true;
                     break;
                 case 2:
+                    AdminLoginMenu.adminLoginMenu();
                     chooseSuccess = true;
                     break;
                 case 3:
