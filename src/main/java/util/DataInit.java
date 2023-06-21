@@ -24,8 +24,6 @@ public class DataInit {
             if (!movieData.exists()) {
                 System.out.println("File doesn't exist.");
             }
-            // Read file
-            FileManager.readFromFile(String.valueOf(movieData));
             // Add movie to file
             String addMovie = InputManager.inputString("Enter a movie");
             // If admin enters "Quit", the program will quit.
