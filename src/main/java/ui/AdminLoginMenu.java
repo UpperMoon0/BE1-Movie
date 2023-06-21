@@ -9,7 +9,7 @@ public class AdminLoginMenu extends Menu{
     // Data initialization
     protected static void dataInit() {
         options.clear();
-        title = "Choose an action:";
+        title = "Hello admin! Please choose an option:";
         options.add("Login");
         options.add("Register");
         options.add("Back to role menu");
@@ -20,18 +20,26 @@ public class AdminLoginMenu extends Menu{
     protected static void choiceEffect(int choice) {
         switch(choice) {
             case 1:
-                login();
-                chooseSuccess = true;
+                // Login
+                if (login()) {
+                    System.out.println("------------------------");
+                    chooseSuccess = true;
+                }
                 break;
             case 2:
+                // Register
+                System.out.println("------------------------");
                 register();
                 chooseSuccess = true;
                 break;
             case 3:
+                // Back to role menu
+                System.out.println("------------------------");
                 RoleMenu.menu();
                 chooseSuccess = true;
                 break;
             case 4:
+                // Exit
                 System.out.println("Goodbye!");
                 chooseSuccess = true;
                 break;
@@ -49,7 +57,7 @@ public class AdminLoginMenu extends Menu{
     }
 
     // Login  
-    private static void login() {
+    private static boolean login() {
         // Get username and password
         String 
             username = InputManager.inputString("Enter your username:"),
@@ -60,9 +68,13 @@ public class AdminLoginMenu extends Menu{
         // Check if username and password match
         if (FileManager.checkUsernamePasswordMatch(admin.toString())) {
             System.out.println("Login successful!");
+            UI.setCurrentAccount(username);
+            return true;
         } else {
             System.out.println("Username or password is incorrect!");
         }
+
+        return false;
     }
 
     // Register 
@@ -86,6 +98,7 @@ public class AdminLoginMenu extends Menu{
 
         // Write to file
         admin = new Admin(username, password);
+        UI.setCurrentAccount(username);
         FileManager.writeToFile("data/adminData.txt", admin.toString() + "\n");
         System.out.println("Register successful!");    
     }

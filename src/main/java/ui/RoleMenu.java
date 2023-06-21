@@ -14,14 +14,19 @@ public class RoleMenu extends Menu {
     protected static void choiceEffect(int choice) {
         switch(choice) {
             case 1:
+                // User
+                System.out.println("------------------------");
                 UserLoginMenu.menu();
                 chooseSuccess = true;
                 break;
             case 2:
+                System.out.println("------------------------");
+                // Admin
                 AdminLoginMenu.menu();
                 chooseSuccess = true;
                 break;
             case 3:
+                // Exit
                 System.out.println("Goodbye!");
                 chooseSuccess = true;
                 break;

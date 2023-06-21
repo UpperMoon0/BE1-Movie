@@ -10,7 +10,7 @@ public class UserLoginMenu extends Menu {
     // Data initialization
     protected static void dataInit() {
         options.clear();
-        title = "Choose an action:";
+        title = "Hello user! Please choose an option:";
         options.add("Login");
         options.add("Register");
         options.add("Back to role menu");
@@ -21,18 +21,28 @@ public class UserLoginMenu extends Menu {
     protected static void choiceEffect(int choice) {
         switch(choice) {
             case 1:
-                login();
-                chooseSuccess = true;
+                // Login
+                if (login()) {
+                    System.out.println("------------------------");
+                    UserMenu.menu();
+                    chooseSuccess = true;
+                }
                 break;
             case 2:
+                // Register
+                System.out.println("------------------------");
                 register();
+                UserMenu.menu();
                 chooseSuccess = true;
                 break;
             case 3:
+                // Back to role menu
+                System.out.println("------------------------");
                 RoleMenu.menu();
                 chooseSuccess = true;
                 break;
             case 4:
+                // Exit
                 System.out.println("Goodbye!");
                 chooseSuccess = true;
                 break;
@@ -50,7 +60,7 @@ public class UserLoginMenu extends Menu {
     }
 
     // Login
-    private static void login() {
+    private static boolean login() {
         // Get username and password
         String 
             username = InputManager.inputString("Enter your username:"),
@@ -61,9 +71,13 @@ public class UserLoginMenu extends Menu {
         // Check if username and password match
         if (FileManager.checkUsernamePasswordMatch(user.toString())) {
             System.out.println("Login successful!");
+            UI.setCurrentAccount(username);
+            return true;
         } else {
             System.out.println("Username or password is incorrect!");
         }
+
+        return false;
     }
 
     // Register 
@@ -87,7 +101,8 @@ public class UserLoginMenu extends Menu {
 
         // Write to file
         user = new User(username, password);
+        UI.setCurrentAccount(username);
         FileManager.writeToFile("data/userData.txt", user.toString() + "\n");
-        System.out.println("Register successful!");    
+        System.out.println("Register successful!");  
     }
 }
