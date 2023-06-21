@@ -47,7 +47,27 @@ public class FileManager {
                 e.printStackTrace();
         }
     }
-
+    // read file
+    public  static  void readFromFile(String path) {
+        File file = new File(path);
+        StringBuilder sb = new StringBuilder();
+        try {
+            // check file
+            if (!file.exists()) {
+                System.out.println("File not exist.");
+            }
+            // read data from file
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+            br.close();
+        } catch (Exception e) {
+            if (UI.getIsDebug())
+                e.printStackTrace();
+        }
+    }
     // Check if a username exists in a file
     public static boolean checkUsernameExist(String username) {
         String path = "data/userData.txt";
