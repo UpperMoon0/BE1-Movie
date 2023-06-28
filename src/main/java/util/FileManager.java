@@ -5,7 +5,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 
+import core.Movie;
 import ui.UI;
 
 public class FileManager {
@@ -47,27 +50,31 @@ public class FileManager {
                 e.printStackTrace();
         }
     }
-    // read file
-    public  static  void readFromFile(String path) {
+
+    // Read from a file
+    public static List<String> readFileContent(String path) {
         File file = new File(path);
-        StringBuilder sb = new StringBuilder();
+        List<String> fileContent = new ArrayList<String>();;
         try {
-            // check file
+            // Check if file exists
             if (!file.exists()) {
                 System.out.println("File not exist.");
             }
-            // read data from file
+            // Read data from file
             BufferedReader br = new BufferedReader(new FileReader(file));
             String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
+            // Read line by line
+            while ((line = br.readLine()) != null); {
+                fileContent.add(line);
             }
             br.close();
         } catch (Exception e) {
-            if (UI.getIsDebug())
+            if (UI.getIsDebug()) 
                 e.printStackTrace();
         }
+        return fileContent;
     }
+
     // Check if a username exists in a file
     public static boolean checkUsernameExist(String username) {
         String path = "data/userData.txt";
@@ -115,5 +122,44 @@ public class FileManager {
                 e.printStackTrace();
         }
         return false;
+    }
+
+    public static void createMovieDataFileIfNotExist() {
+        String path = "data/movieData.txt";
+
+        File file = new File(path);
+        try {
+            // Check if file exists
+            if (!file.exists()) {
+                // Default movies 
+                List<Movie> defaultMoviesList = new ArrayList<Movie>();
+                defaultMoviesList.add(new Movie("Spiderman", 100000));
+                defaultMoviesList.add(new Movie("Batmann", 100000));
+                defaultMoviesList.add(new Movie("Venom", 100000));
+                defaultMoviesList.add(new Movie("Superman", 100000));
+                defaultMoviesList.add(new Movie("Cô dâu 8 tuổi", 70000));
+                defaultMoviesList.add(new Movie("Thám tử Conan", 120000));
+                defaultMoviesList.add(new Movie("The forest", 100000));
+                defaultMoviesList.add(new Movie("Joker", 100000));
+                defaultMoviesList.add(new Movie("Rambo", 100000));
+                defaultMoviesList.add(new Movie("Thợ săn kho báu", 100000));
+                defaultMoviesList.add(new Movie("Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train", 140000));
+                defaultMoviesList.add(new Movie("Demon Slayer: Kimetsu no Yaiba To the Swordsmith Village", 140000));
+                defaultMoviesList.add(new Movie("Your name", 120000));
+                defaultMoviesList.add(new Movie("Weathering with you", 120000));
+                defaultMoviesList.add(new Movie("Suzume", 120000));
+
+                // Create the file if it doesn't exist
+                createFileIfNotExist(path);
+
+                // Write to the file
+                for (Movie mv : defaultMoviesList) {
+                    writeToFile(path, mv.toString() + "\n");
+                }
+            }
+        } catch (Exception e) {
+            if (UI.getIsDebug())
+                e.printStackTrace();
+        }
     }
 }

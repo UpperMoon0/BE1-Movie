@@ -1,10 +1,15 @@
-ase
-sa
-e
-ae
-ae
-as
-ea
-se
-sae
-a
+Spiderman,100000
+Batmann,100000
+Venom,100000
+Superman,100000
+Cô dâu 8 tuổi,70000
+Thám tử Conan,120000
+The forest,100000
+Joker,100000
+Rambo,100000
+Thợ săn kho báu,100000
+Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,140000
+Demon Slayer: Kimetsu no Yaiba To the Swordsmith Village,140000
+Your name,120000
+Weathering with you,120000
+Suzume,120000

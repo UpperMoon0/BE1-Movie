@@ -1,7 +1,6 @@
 package ui;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Menu {
     protected static boolean chooseSuccess = false; 
@@ -22,7 +21,6 @@ public class Menu {
             System.out.print("Your choice: ");
             choice = 0;
             try {
-                UI.sc = new Scanner(System.in);
                 choice = UI.sc.nextInt();
 
                 if (choice > 0 && choice < options.size()) {

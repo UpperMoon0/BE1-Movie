@@ -78,7 +78,7 @@ public class AdminLoginMenu extends Menu{
     }
 
     // Register 
-    public static void register() {
+    private static void register() {
         Admin admin;
         String 
             username,
@@ -86,7 +86,7 @@ public class AdminLoginMenu extends Menu{
 
         // Get username
         do {
-            username = InputManager.inputUsername("Enter your username:");
+            username = InputManager.inputUsername();
 
             // Check if username already exists
             if (FileManager.checkUsernameExist(username))
@@ -94,7 +94,7 @@ public class AdminLoginMenu extends Menu{
         } while (FileManager.checkUsernameExist(username));
 
         // Get password
-        password = InputManager.inputPassword("Enter your password:");
+        password = InputManager.inputPassword();
 
         // Write to file
         admin = new Admin(username, password);

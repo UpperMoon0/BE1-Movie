@@ -1,6 +1,11 @@
 package ui;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import core.Ticket;
+import util.FileManager;
+import util.InputManager;
 
 public class UserMenu extends Menu {
     // Data initialization
@@ -19,6 +24,8 @@ public class UserMenu extends Menu {
             case 1:
                 // Buy a ticket
                 System.out.println("------------------------");
+                buyTicket();
+                chooseSuccess = true;
                 break;
             case 2:
                 // View my tickets
@@ -59,5 +66,21 @@ public class UserMenu extends Menu {
         do {
             choiceEffect(getChoice());
         } while (!chooseSuccess);
+    }
+
+    // Buy a ticket
+    private static void buyTicket() {
+        String movie;
+        LocalDateTime showtime;
+        String seat;
+
+        // Get user input
+        movie = InputManager.inputMovie();
+        showtime = InputManager.inputShowtime();
+        seat = InputManager.inputSeat();
+
+        Ticket ticket = new Ticket(UI.getCurrentAccount() ,movie, showtime, seat);
+        FileManager.writeToFile("data/ticketData", ticket.toString() + "\n");
+        System.out.println("Ticket bought successfully!");
     }
 }
