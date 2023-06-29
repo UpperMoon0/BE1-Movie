@@ -52,7 +52,7 @@ public class FileManager {
     }
 
     // Read from a file
-    public static List<String> readFileContent(String path) {
+    public static List<String> readEveryLines(String path) {
         File file = new File(path);
         List<String> fileContent = new ArrayList<String>();;
         try {
@@ -61,12 +61,13 @@ public class FileManager {
                 System.out.println("File not exist.");
             }
             // Read data from file
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new FileReader(path));
             String line;
             // Read line by line
-            while ((line = br.readLine()) != null); {
+            while ((line = br.readLine()) != null) {
                 fileContent.add(line);
             }
+
             br.close();
         } catch (Exception e) {
             if (UI.getIsDebug()) 
@@ -137,12 +138,12 @@ public class FileManager {
                 defaultMoviesList.add(new Movie("Batmann", 100000));
                 defaultMoviesList.add(new Movie("Venom", 100000));
                 defaultMoviesList.add(new Movie("Superman", 100000));
-                defaultMoviesList.add(new Movie("Cô dâu 8 tuổi", 70000));
-                defaultMoviesList.add(new Movie("Thám tử Conan", 120000));
+                defaultMoviesList.add(new Movie("Balika Vadhu: The Child Bride", 70000));
+                defaultMoviesList.add(new Movie("Detective Conan: The Scarlet Bullet", 120000));
                 defaultMoviesList.add(new Movie("The forest", 100000));
                 defaultMoviesList.add(new Movie("Joker", 100000));
                 defaultMoviesList.add(new Movie("Rambo", 100000));
-                defaultMoviesList.add(new Movie("Thợ săn kho báu", 100000));
+                defaultMoviesList.add(new Movie("Annabelle", 100000));
                 defaultMoviesList.add(new Movie("Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train", 140000));
                 defaultMoviesList.add(new Movie("Demon Slayer: Kimetsu no Yaiba To the Swordsmith Village", 140000));
                 defaultMoviesList.add(new Movie("Your name", 120000));

@@ -32,9 +32,14 @@ public class InputManager {
 
         do {
             inputStr = inputString("Enter your username:");
-            if (!inputStr.matches("[a-zA-Z0-9]{1,12}"))
-                System.out.println("Username can only contain letters and numbers, and can't be longer than 12 characters, please try again!");
-        } while (!inputStr.matches("[a-zA-Z0-9]{1,12}"));
+            if (!inputStr.matches("^[A-Za-z]\\d{1,}[A-Za-z0-9]{2,10}$")) {
+                System.out.println("Username must:");
+                System.out.println("- Start with a letter");
+                System.out.println("- Contain at least 1 digit");
+                System.out.println("- Length from 4 to 12 characters");
+                System.out.println("- Can't contain any special characters");
+            }
+        } while (!inputStr.matches("^[A-Za-z]\\d{1,}[A-Za-z0-9]{4,12}$"));
 
         return inputStr;
     }
@@ -56,7 +61,8 @@ public class InputManager {
     public static String inputMovie() {
         // Get movies list
         List<Movie> moviesList = new ArrayList<Movie>(); 
-        for (String movie : FileManager.readFileContent("data/movieData.txt")) {
+        List<String> movieData = FileManager.readEveryLines("data/movieData.txt");
+        for (String movie : movieData) {
             if (movie != null) {
                 String[] parts = movie.split(",");
                 moviesList.add(new Movie(parts[0], Integer.parseInt(parts[1])));

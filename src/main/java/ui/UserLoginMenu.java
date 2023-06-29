@@ -63,8 +63,8 @@ public class UserLoginMenu extends Menu {
     private static boolean login() {
         // Get username and password
         String 
-            username = InputManager.inputString("Enter your username:"),
-            password = InputManager.inputString("Enter your password:");
+            username = InputManager.inputUsername(),
+            password = InputManager.inputPassword();
 
         User user = new User(username, password);
         
