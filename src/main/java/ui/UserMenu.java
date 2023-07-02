@@ -2,8 +2,10 @@ package ui;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 import core.Ticket;
+import core.User;
 import util.FileManager;
 import util.InputManager;
 
@@ -30,6 +32,7 @@ public class UserMenu extends Menu {
             case 2:
                 // View my tickets
                 System.out.println("------------------------");
+                viewTicket();
                 break;
             case 3:
                 // Logout
@@ -82,5 +85,35 @@ public class UserMenu extends Menu {
         Ticket ticket = new Ticket(UI.getCurrentAccount() ,movie, showtime, seat);
         FileManager.writeToFile("data/ticketData", ticket.toString() + "\n");
         System.out.println("Ticket bought successfully!");
+    }
+    // Parse ticket
+    public static Ticket parseTicket(String ticketInformation) {
+        // Check ticket
+        String[] parts = ticketInformation.split(",");
+        String username = parts[0];
+        String movie = parts[1];
+        LocalDateTime showtime = LocalDateTime.parse(parts[2]);
+        String seat = parts[3];
+        Ticket ticket = new Ticket(username, movie, showtime, seat);
+        return ticket;
+    }
+    // View ticket
+    private static void viewTicket() {
+        // Read ticketData file
+        List<String> ticketData = FileManager.readEveryLines("data/ticketData");
+        // Check information of ticket's user
+        for (String ticketInformation : ticketData) {
+            Ticket ticket = parseTicket(ticketInformation);
+            // If the username of the current user matches the username of the ticket being processed, then print the ticket
+            if (ticket.getOwner().equals(UI.getCurrentAccount())) {
+                System.out.println("Owner: " + ticket.getOwner());
+                System.out.println("Moive: " + ticket.getMovie());
+                System.out.println("Showtime: " + ticket.getShowtime());
+                System.out.println("Seat: " + ticket.getSeat());
+                System.out.println("------------------------");
+            } else {
+                System.out.println("You didn't buy ticket.");
+            }
+        }
     }
 }
