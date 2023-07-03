@@ -83,11 +83,16 @@ public class InputManager {
         int inputInt;
 
         do {
-            inputInt = UI.sc.nextInt();
-            if (inputInt > 0 && inputInt <= moviesList.size())
-                return moviesList.get(inputInt - 1).getName();
-            else
+            try {
+                inputInt = UI.sc.nextInt();
+                if (inputInt > 0 && inputInt <= moviesList.size())
+                    return moviesList.get(inputInt - 1).getName();
+                else
+                    System.out.println("Invalid choice, please try again!");
+            } catch (Exception e) { 
                 System.out.println("Invalid choice, please try again!");
+            }
+
         } while (true);
     }
 

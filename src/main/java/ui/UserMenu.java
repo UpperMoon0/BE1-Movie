@@ -5,7 +5,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 import core.Ticket;
-import core.User;
 import util.FileManager;
 import util.InputManager;
 
@@ -27,7 +26,6 @@ public class UserMenu extends Menu {
                 // Buy a ticket
                 System.out.println("------------------------");
                 buyTicket();
-                chooseSuccess = true;
                 break;
             case 2:
                 // View my tickets
@@ -85,7 +83,9 @@ public class UserMenu extends Menu {
         Ticket ticket = new Ticket(UI.getCurrentAccount() ,movie, showtime, seat);
         FileManager.writeToFile("data/ticketData", ticket.toString() + "\n");
         System.out.println("Ticket bought successfully!");
+        System.out.println("------------------------");
     }
+
     // Parse ticket
     public static Ticket parseTicket(String ticketInformation) {
         // Check ticket
@@ -97,6 +97,7 @@ public class UserMenu extends Menu {
         Ticket ticket = new Ticket(username, movie, showtime, seat);
         return ticket;
     }
+
     // View ticket
     private static void viewTicket() {
         // Read ticketData file
@@ -107,13 +108,14 @@ public class UserMenu extends Menu {
             // If the username of the current user matches the username of the ticket being processed, then print the ticket
             if (ticket.getOwner().equals(UI.getCurrentAccount())) {
                 System.out.println("Owner: " + ticket.getOwner());
-                System.out.println("Moive: " + ticket.getMovie());
+                System.out.println("Movie: " + ticket.getMovie());
                 System.out.println("Showtime: " + ticket.getShowtime());
                 System.out.println("Seat: " + ticket.getSeat());
                 System.out.println("------------------------");
             } else {
-                System.out.println("You didn't buy ticket.");
-            }
+                System.out.println("You didn't buy any ticket.");
+                System.out.println("------------------------");
+            } 
         }
     }
 }

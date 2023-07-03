@@ -19,8 +19,8 @@ public class Menu {
         // Get user input
         do {
             System.out.print("Your choice: ");
-            choice = 0;
             try {
+                UI.sc = new java.util.Scanner(System.in);
                 choice = UI.sc.nextInt();
 
                 if (choice > 0 && choice < options.size()) {
