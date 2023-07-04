@@ -1,5 +1,11 @@
 package ui;
 
+import java.time.LocalTime;
+
+import core.Movie;
+import util.FileManager;
+import util.InputManager;
+
 public class AdminMenu extends Menu {
     // Data initialization
     protected static void dataInit() {
@@ -18,7 +24,7 @@ public class AdminMenu extends Menu {
             case 1:
                 // Add a movie
                 System.out.println("------------------------");
-
+                addMovie();
                 break;
             case 2:
                 // Remove movie
@@ -28,7 +34,7 @@ public class AdminMenu extends Menu {
             case 3:
                 // Change movie price
                 System.out.println("------------------------");
-
+                changeMoviePrice();
                 break;
             case 4:
                 // Logout
@@ -47,11 +53,58 @@ public class AdminMenu extends Menu {
     }
 
     // Menu
-    
     public static void menu() {
+        // Get the current time
+        LocalTime time = LocalTime.now();
+
+        // Greet the user
+        if (time.getHour() >= 0 && time.getHour() < 12) {
+            System.out.println("Good morning " + UI.getCurrentAccount() + "!");
+        } else if (time.getHour() >= 12 && time.getHour() < 18) {
+            System.out.println("Good afternoon " + UI.getCurrentAccount() + "!");
+        } else {
+            System.out.println("Good evening " + UI.getCurrentAccount() + "!");
+        }
+
+        // Menu
         dataInit();
         do {
             choiceEffect(getChoice());
         } while (!chooseSuccess);
+    }
+
+    // Add a movie
+    public static void addMovie() {
+        do {
+            // Create movieData file if not exist
+            FileManager.createMovieDataFileIfNotExist();
+            // Add movie to file
+            Movie movie = new Movie(InputManager.inputMovieName(),
+                                    InputManager.inputMoviePrice());
+            if (!FileManager.checkMovieExist(movie.getName())) {
+                FileManager.writeToFile("data/movieData.txt", movie.toString() + "\n");
+                System.out.println("Movie added successfully!");
+                System.out.println("------------------------");
+                break;
+            } else
+                System.out.println("Movie already exists, please try again!");
+        } while (true);
+    }
+
+    // Change movie price
+    public static void changeMoviePrice() {
+        do {
+            // Create movieData file if not exist
+            FileManager.createMovieDataFileIfNotExist();
+            // Change movie price
+            String movieName = InputManager.inputMovieName();
+            if (FileManager.checkMovieExist(movieName)) {
+                FileManager.changeMoviePrice(movieName, InputManager.inputMoviePrice());
+                System.out.println("Movie price changed successfully!");
+                System.out.println("------------------------");
+                break;
+            } else
+                System.out.println("Movie doesn't exist, please try again!");
+        } while (true);
     }
 }

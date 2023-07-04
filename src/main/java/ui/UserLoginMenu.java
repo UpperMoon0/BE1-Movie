@@ -105,5 +105,6 @@ public class UserLoginMenu extends Menu {
         UI.setCurrentAccount(username);
         FileManager.writeToFile("data/userData.txt", user.toString() + "\n");
         System.out.println("Register successful!");  
+        System.out.println("------------------------");
     }
 }

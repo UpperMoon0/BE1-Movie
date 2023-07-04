@@ -14,11 +14,11 @@ public class InputManager {
     // Get user input for a string
     public static String inputString(String message) {
         String inputStr;
-        Scanner sc = new Scanner(System.in);
+        UI.sc = new Scanner(System.in);
 
         do {
             System.out.println(message);
-            inputStr = sc.nextLine().trim();
+            inputStr = UI.sc.nextLine().trim();
             if (inputStr.isEmpty()) {
                 System.out.println("String can't be empty, please try again!");
             }
@@ -69,6 +69,7 @@ public class InputManager {
 
     // Get user input for choosing a movie
     public static String inputMovie() {
+        FileManager.createMovieDataFileIfNotExist();
         // Get movies list
         List<Movie> moviesList = new ArrayList<Movie>();
         List<String> movieData = FileManager.readEveryLine("data/movieData.txt");
@@ -156,5 +157,40 @@ public class InputManager {
         } while (!availableSeatsList.contains(inputStr));
 
         return inputStr;
+    }
+
+    // Get admin input for movie name
+    public static String inputMovieName() {
+        String inputStr;
+        String regex = "^[a-zA-Z0-9\\s]+$";
+
+        do {
+            inputStr = inputString("Enter the movie name:");
+            if (!inputStr.matches(regex)) {
+                System.out.println("Movie name must:\n" +
+                    "- Not contain any special characters\n" +
+                    "Please try again!");
+            }
+        } while (!inputStr.matches(regex));
+
+        return inputStr;
+    }
+
+    // Get admin input for movie price
+    public static int inputMoviePrice() {
+        int inputInt;
+
+        do {
+            try {
+                inputInt = Integer.parseInt(inputString("Enter the movie price:"));
+                if (inputInt > 0) {
+                    return inputInt;
+                } else {
+                    System.out.println("Invalid price, please try again!");
+                }
+            } catch (Exception e) {
+                System.out.println("Invalid price, please try again!");
+            }
+        } while (true);
     }
 }

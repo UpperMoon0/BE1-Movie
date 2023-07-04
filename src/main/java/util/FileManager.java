@@ -3,8 +3,10 @@ package util;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,69 +14,57 @@ import core.Movie;
 import ui.UI;
 
 public class FileManager {
-    // Create a file
+    // Create a file if it doesn't exist
     public static File createFileIfNotExist(String path) {
-        try {
-            File file = new File(path);
-            
-            // Create the file if it doesn't exist
-            if (!file.exists()) {
-                // Create the parent directories if they don't exist
-                file.getParentFile().mkdirs();
+        File file = new File(path);
 
+        // Create the file if it doesn't exist
+        if (!file.exists()) {
+            // Create the parent directories if they don't exist
+            file.getParentFile().mkdirs();
+
+            try {
                 // Create the file
                 file.createNewFile();
+            } catch (IOException e) {
+                if (UI.getIsDebug())
+                    e.printStackTrace();
             }
-
-            return file;
-        } catch (Exception e) {
-            if (UI.getIsDebug()) 
-                e.printStackTrace();          
         }
 
-        return null;
+        return file;
     }
 
     // Write to a file
     public static void writeToFile(String path, String str) {
-        try {
-            // Create the file if it doesn't exist
-            createFileIfNotExist(path);
+        // Create the file if it doesn't exist
+        createFileIfNotExist(path);
 
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, true))) {
             // Write to the file
-            BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
             bw.append(str);
-            bw.close();
-        } catch (Exception e) {
-            if (UI.getIsDebug()) 
-                e.printStackTrace();
+        } catch (IOException e) {
+            if (UI.getIsDebug())
+                    e.printStackTrace();
         }
     }
 
     // Read from a file
     public static List<String> readEveryLine(String path) {
-        File file = new File(path);
-        List<String> fileContent = new ArrayList<String>();
+        List<String> fileContent = new ArrayList<>();
 
-        // Check if file exists
-        if (file.exists()) {
-            try {
-                // Read data from file
-                BufferedReader br = new BufferedReader(new FileReader(path));
-                String line;
-                // Read line by line
-                while ((line = br.readLine()) != null) {
-                    fileContent.add(line);
-                }
-
-                br.close();
-            } catch (Exception e) {
-                if (UI.getIsDebug()) 
-                    e.printStackTrace();
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            // Read line by line
+            while ((line = br.readLine()) != null) {
+                fileContent.add(line);
             }
-        } else {
-            if (UI.getIsDebug()) 
-                System.out.println("Read every line failed, file doesn't exist! " + path);
+        } catch (FileNotFoundException e) {
+            if (UI.getIsDebug())
+                    e.printStackTrace();
+        } catch (IOException e) {
+            if (UI.getIsDebug())
+                    e.printStackTrace();
         }
 
         return fileContent;
@@ -82,97 +72,145 @@ public class FileManager {
 
     // Check if a username exists in a file
     public static boolean checkUsernameExist(String username, boolean isAdmin) {
-        String path;
-        if (isAdmin)
-            path = "data/adminData.txt";
-        else
-            path = "data/userData.txt";
-            
-        try {
-            // Create the file if it doesn't exist
-            createFileIfNotExist(path);
+        String path = isAdmin ? "data/adminData.txt" : "data/userData.txt";
 
-            // Read the file
-            BufferedReader br = new BufferedReader(new FileReader(path));
+        // Create the file if it doesn't exist
+        createFileIfNotExist(path);
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts[0].contains(username)) {
-                    br.close();
+                if (parts[0].equals(username)) {
                     return true;
                 }
             }
-            br.close();
-        } catch (Exception e) {
-            if (UI.getIsDebug()) 
-                e.printStackTrace();
+        } catch (IOException e) {
+            if (UI.getIsDebug())
+                    e.printStackTrace();
         }
+
         return false;
     }
 
     // Check if a user exists in a file
     public static boolean checkUsernamePasswordMatch(String userData, boolean isAdmin) {
-        String path;
-        if (isAdmin)
-            path = "data/adminData.txt";
-        else
-            path = "data/userData.txt";
+        String path = isAdmin ? "data/adminData.txt" : "data/userData.txt";
 
-        try {
-            // Create the file if it doesn't exist
-            createFileIfNotExist(path);
+        // Create the file if it doesn't exist
+        createFileIfNotExist(path);
 
-            // Read the file
-            BufferedReader br = new BufferedReader(new FileReader(path));
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.equals(userData)) {
-                    br.close();
                     return true;
                 }
             }
-            br.close();
-        } catch (Exception e) {
-            if (UI.getIsDebug()) 
-                e.printStackTrace();
+        } catch (IOException e) {
+            if (UI.getIsDebug())
+                    e.printStackTrace();
         }
+
         return false;
     }
 
+    // Create movieData file if not exist
     public static void createMovieDataFileIfNotExist() {
         String path = "data/movieData.txt";
 
         File file = new File(path);
-        try {
-            // Check if file exists
-            if (!file.exists()) {
-                // Default movies 
-                List<Movie> defaultMoviesList = new ArrayList<Movie>();
-                defaultMoviesList.add(new Movie("Spiderman", 100000));
-                defaultMoviesList.add(new Movie("Batmann", 100000));
-                defaultMoviesList.add(new Movie("Venom", 100000));
-                defaultMoviesList.add(new Movie("Superman", 100000));
-                defaultMoviesList.add(new Movie("Balika Vadhu: The Child Bride", 70000));
-                defaultMoviesList.add(new Movie("Detective Conan: The Scarlet Bullet", 120000));
-                defaultMoviesList.add(new Movie("The forest", 100000));
-                defaultMoviesList.add(new Movie("Joker", 100000));
-                defaultMoviesList.add(new Movie("Rambo", 100000));
-                defaultMoviesList.add(new Movie("Annabelle", 100000));
-                defaultMoviesList.add(new Movie("Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train", 140000));
-                defaultMoviesList.add(new Movie("Demon Slayer: Kimetsu no Yaiba To the Swordsmith Village", 140000));
-                defaultMoviesList.add(new Movie("Your name", 120000));
-                defaultMoviesList.add(new Movie("Weathering with you", 120000));
-                defaultMoviesList.add(new Movie("Suzume", 120000));
+        if (!file.exists()) {
+            // Default movies 
+            List<Movie> defaultMoviesList = new ArrayList<Movie>();
+            defaultMoviesList.add(new Movie("Spiderman", 100000));
+            defaultMoviesList.add(new Movie("Batmann", 100000));
+            defaultMoviesList.add(new Movie("Venom", 100000));
+            defaultMoviesList.add(new Movie("Superman", 100000));
+            defaultMoviesList.add(new Movie("Balika Vadhu: The Child Bride", 70000));
+            defaultMoviesList.add(new Movie("Detective Conan: The Scarlet Bullet", 120000));
+            defaultMoviesList.add(new Movie("The forest", 100000));
+            defaultMoviesList.add(new Movie("Joker", 100000));
+            defaultMoviesList.add(new Movie("Rambo", 100000));
+            defaultMoviesList.add(new Movie("Annabelle", 100000));
+            defaultMoviesList.add(new Movie("Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train", 140000));
+            defaultMoviesList.add(new Movie("Demon Slayer: Kimetsu no Yaiba To the Swordsmith Village", 140000));
+            defaultMoviesList.add(new Movie("Your name", 120000));
+            defaultMoviesList.add(new Movie("Weathering with you", 120000));
+            defaultMoviesList.add(new Movie("Suzume", 120000));
 
-                // Create the file if it doesn't exist
-                createFileIfNotExist(path);
+            // Create the file if it doesn't exist
+            createFileIfNotExist(path);
 
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
                 // Write to the file
                 for (Movie mv : defaultMoviesList) {
-                    writeToFile(path, mv.toString() + "\n");
+                    bw.write(mv.toString());
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                if (UI.getIsDebug())
+                    e.printStackTrace();
+            }
+        }
+    }
+
+    // Check if a movie exists in a file
+    public static boolean checkMovieExist(String movie) {
+        String path = "data/movieData.txt";
+
+        // Create the file if it doesn't exist
+        createMovieDataFileIfNotExist();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts[0].equals(movie)) {
+                    return true;
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
+            if (UI.getIsDebug())
+                e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    // Change movie price
+    public static void changeMoviePrice(String movie, int price) {
+        String path = "data/movieData.txt";
+
+        // Create the file if it doesn't exist
+        createMovieDataFileIfNotExist();
+
+        List<String> fileContent = new ArrayList<>();
+
+        // Read the file
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                // Change the price of the movie
+                if (parts[0].equals(movie)) {
+                    fileContent.add(movie + "," + price);
+                } else {
+                    fileContent.add(line);
+                }
+            }
+        } catch (IOException e) {
+            if (UI.getIsDebug())
+                e.printStackTrace();
+        }
+
+        // Write to the file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+            for (String str : fileContent) {
+                bw.write(str);
+                bw.newLine();
+            }
+        } catch (IOException e) {
             if (UI.getIsDebug())
                 e.printStackTrace();
         }

@@ -105,5 +105,6 @@ public class AdminLoginMenu extends Menu{
         UI.setCurrentAccount(username);
         FileManager.writeToFile("data/adminData.txt", admin.toString() + "\n");
         System.out.println("Register successful!");    
+        System.out.println("------------------------");
     }
 }

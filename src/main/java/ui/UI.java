@@ -2,7 +2,7 @@ package ui;
 
 import java.util.Scanner;
 
-import util.DataInit;
+import util.FileManager;
 
 public class UI {
     // Scanner
@@ -15,8 +15,8 @@ public class UI {
     private static String currentAccount;
     
     // Main function
-    public static void main(String[] args) {       
-        DataInit.dataInit();
+    public static void main(String[] args) {   
+        FileManager.createMovieDataFileIfNotExist();    
         RoleMenu.menu();
         sc.close();
     }
