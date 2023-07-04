@@ -10,7 +10,6 @@ public class Menu {
 
     protected static int getChoice() {
         int choice;
-        UI.sc = new Scanner(System.in);
 
         // Print title and options
         System.out.println(title);
@@ -24,15 +23,16 @@ public class Menu {
         do {
             System.out.print("Your choice: ");
             try {
+                UI.sc = new Scanner(System.in);
                 choice = UI.sc.nextInt();
 
                 if (choice > 0 && choice <= options.size()) {
                     return choice;
                 } else {
-                    System.out.println("Invalid choice, please try again!");
+                    System.out.println(UI.ANSI_RED + "Invalid choice, please try again!" + UI.ANSI_RESET);
                 }
             } catch (Exception e) {
-                System.out.println("Invalid choice, please try again!");
+                System.out.println(UI.ANSI_RED + "Invalid choice, please try again!" + UI.ANSI_RESET);
             }
         } while (true);
     }

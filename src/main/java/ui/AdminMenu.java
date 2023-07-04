@@ -86,11 +86,11 @@ public class AdminMenu extends Menu {
                                     InputManager.inputMoviePrice());
             if (!FileManager.checkMovieExist(movie.getName())) {
                 FileManager.writeToFile("data/movieData.txt", movie.toString() + "\n");
-                System.out.println("Movie added successfully!");
+                System.out.println(UI.ANSI_GREEN + "Movie added successfully!" + UI.ANSI_RESET);
                 System.out.println("------------------------");
                 break;
             } else
-                System.out.println("Movie already exists, please try again!");
+                System.out.println(UI.ANSI_RED + "Movie already exist, please try again!" + UI.ANSI_RESET);
         } while (true);
     }
 
@@ -104,11 +104,11 @@ public class AdminMenu extends Menu {
             String movieName = InputManager.inputMovieName();
             if (FileManager.checkMovieExist(movieName)) {
                 FileManager.changeMoviePrice(movieName, InputManager.inputMoviePrice());
-                System.out.println("Movie price changed successfully!");
+                System.out.println(UI.ANSI_GREEN + "Movie price changed successfully!" + UI.ANSI_RESET);
                 System.out.println("------------------------");
                 break;
             } else
-                System.out.println("Movie doesn't exist, please try again!");
+                System.out.println(UI.ANSI_RED + "Movie not found, please try again!" + UI.ANSI_RESET);
         } while (true);
     }
 

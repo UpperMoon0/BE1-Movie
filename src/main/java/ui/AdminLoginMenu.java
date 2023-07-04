@@ -70,11 +70,11 @@ public class AdminLoginMenu extends Menu{
         
         // Check if username and password match
         if (FileManager.checkUsernamePasswordMatch(user.toString(), true)) {
-            System.out.println("Login successful!");
+            System.out.println(UI.ANSI_GREEN + "Login successful!" + UI.ANSI_RESET);
             UI.setCurrentAccount(username);
             return true;
         } else {
-            System.out.println("Username or password is incorrect!");
+            System.out.println(UI.ANSI_RED + "Username or password is incorrect!" + UI.ANSI_RESET);
             System.out.println("------------------------");
         }
 
@@ -94,7 +94,7 @@ public class AdminLoginMenu extends Menu{
 
             // Check if username already exists
             if (FileManager.checkUsernameExist(username, true))
-                System.out.println("Username already exists, please try again!");
+                System.out.println(UI.ANSI_RED + "Username already exists, please try again!" + UI.ANSI_RESET);
         } while (FileManager.checkUsernameExist(username, true));
 
         // Get password
@@ -104,7 +104,7 @@ public class AdminLoginMenu extends Menu{
         admin = new Admin(username, password);
         UI.setCurrentAccount(username);
         FileManager.writeToFile("data/adminData.txt", admin.toString() + "\n");
-        System.out.println("Register successful!");    
+        System.out.println(UI.ANSI_GREEN + "Register successful!" + UI.ANSI_RESET);    
         System.out.println("------------------------");
     }
 }

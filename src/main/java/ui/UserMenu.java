@@ -83,7 +83,7 @@ public class UserMenu extends Menu {
 
         Ticket ticket = new Ticket(UI.getCurrentAccount() ,movie, showtime, seat);
         FileManager.writeToFile("data/ticketData.txt", ticket.toString() + "\n");
-        System.out.println("Ticket bought successfully!");
+        System.out.println(UI.ANSI_GREEN + "Buy ticket successfully!" + UI.ANSI_RESET);
         System.out.println("------------------------");
     }
 

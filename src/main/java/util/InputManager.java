@@ -20,7 +20,7 @@ public class InputManager {
             System.out.println(message);
             inputStr = UI.sc.nextLine().trim();
             if (inputStr.isEmpty()) {
-                System.out.println("String can't be empty, please try again!");
+                System.out.println(UI.ANSI_RED + "Input can't be empty, please try again!" + UI.ANSI_RESET);
             }
         } while (inputStr.isEmpty());
 
@@ -35,12 +35,14 @@ public class InputManager {
         do {
             inputStr = inputString("Enter your username:");
             if (!inputStr.matches(regex)) {
-                System.out.println("Username must:\n" +
+                System.out.println(UI.ANSI_RED +
+                    "Username must:\n" +
                     "- Start with a letter\n" +
                     "- Contain at least 1 digit\n" +
                     "- Length from 4 to 12 characters\n" +
                     "- Can't contain any special characters\n" +
-                    "Please try again!");
+                    "Please try again!" +
+                    UI.ANSI_RESET);
             }
         } while (!inputStr.matches(regex));
 
@@ -55,11 +57,13 @@ public class InputManager {
         do {
             inputStr = inputString("Enter your password:");
             if (!inputStr.matches(regex)) {
-                System.out.println("Password must:\n" +
+                System.out.println(UI.ANSI_RED + 
+                    "Password must:\n" +
                     "- Contain at least 1 digit and 1 uppercase letter\n" +
                     "- Without any special characters,\n" +
                     "- Can't be longer than 12 characters\n" +
-                    "Please try again!");
+                    "Please try again!" + 
+                    UI.ANSI_RESET);
             }
         } while (!inputStr.matches(regex));
 
@@ -91,14 +95,15 @@ public class InputManager {
 
         do {
             try {
+                UI.sc = new Scanner(System.in);
                 inputInt = UI.sc.nextInt();
                 if (inputInt > 0 && inputInt <= moviesList.size()) {
                     return moviesList.get(inputInt - 1).getName();
                 } else {
-                    System.out.println("Invalid choice, please try again!");
+                    System.out.println(UI.ANSI_RED + "Invalid choice, please try again!" + UI.ANSI_RESET);
                 }
             } catch (Exception e) {
-                System.out.println("Invalid choice, please try again!");
+                System.out.println(UI.ANSI_RED + "Invalid choice, please try again!" + UI.ANSI_RESET);
             }
         } while (true);
     }
@@ -130,14 +135,14 @@ public class InputManager {
                 inputDateTime = LocalDateTime.parse(inputDate + " " + inputTime, formatter);
 
                 if (!inputDateTime.isAfter(LocalDateTime.now())) {
-                    System.out.println("Can't choose past showtime, please try again!");
+                    System.out.println(UI.ANSI_RED + "Showtime must be in the future, please try again!" + UI.ANSI_RESET);
                 } else if (!Movie.getShowtimesList().contains(inputDateTime.toLocalTime())) {
-                    System.out.println("Must choose a showtime listed above, please try again!");
+                    System.out.println(UI.ANSI_RED + "Invalid showtime, please try again!" + UI.ANSI_RESET);
                 } else {
                     return inputDateTime;
                 }
             } catch (Exception e) {
-                System.out.println("Invalid date or time, please try again!");
+                System.out.println(UI.ANSI_RED + "Invalid showtime, please try again!" + UI.ANSI_RESET);
             }
         } while (true);
     }
@@ -152,7 +157,7 @@ public class InputManager {
         do {
             inputStr = inputString("Choose a seat:");
             if (!availableSeatsList.contains(inputStr)) {
-                System.out.println("Seat is not available, please try again!");
+                System.out.println(UI.ANSI_RED + "Seat is not available, please try again!" + UI.ANSI_RESET);
             }
         } while (!availableSeatsList.contains(inputStr));
 
@@ -167,9 +172,11 @@ public class InputManager {
         do {
             inputStr = inputString("Enter the movie name:");
             if (!inputStr.matches(regex)) {
-                System.out.println("Movie name must:\n" +
+                System.out.println(UI.ANSI_RED + 
+                    "Movie name must:\n" +
                     "- Not contain any special characters\n" +
-                    "Please try again!");
+                    "Please try again!" +
+                    UI.ANSI_RESET);
             }
         } while (!inputStr.matches(regex));
 
@@ -186,10 +193,10 @@ public class InputManager {
                 if (inputInt > 0) {
                     return inputInt;
                 } else {
-                    System.out.println("Invalid price, please try again!");
+                    System.out.println(UI.ANSI_RED + "Invalid price, please try again!" + UI.ANSI_RESET);
                 }
             } catch (Exception e) {
-                System.out.println("Invalid price, please try again!");
+                System.out.println(UI.ANSI_RED + "Invalid price, please try again!" + UI.ANSI_RESET);
             }
         } while (true);
     }
