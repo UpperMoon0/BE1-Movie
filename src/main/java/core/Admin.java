@@ -1,6 +1,4 @@
-
 package core;
-
 
 public class Admin {
     private String username;

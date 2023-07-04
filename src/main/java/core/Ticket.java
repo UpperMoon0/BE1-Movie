@@ -38,4 +38,9 @@ public class Ticket {
     public String toString () {
         return owner + "," + movie + "," + showtime + "," + seat;
     }
+
+    public static Ticket parseTicket (String ticketInformation) {
+        String[] parts = ticketInformation.split(",");
+        return new Ticket(parts[0], parts[1], LocalDateTime.parse(parts[2]), parts[3]);
+    }
 }

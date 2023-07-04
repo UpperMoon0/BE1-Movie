@@ -9,7 +9,7 @@ public class UI {
     public static Scanner sc = new Scanner(System.in);
 
     // Set this to true to enable debug mode
-    private static final boolean isDebug = false;
+    private static final boolean isDebug = true;
 
     // Current account name
     private static String currentAccount;

@@ -52,27 +52,31 @@ public class FileManager {
     }
 
     // Read from a file
-    public static List<String> readEveryLines(String path) {
+    public static List<String> readEveryLine(String path) {
         File file = new File(path);
-        List<String> fileContent = new ArrayList<String>();;
-        try {
-            // Check if file exists
-            if (!file.exists()) {
-                System.out.println("File not exist.");
-            }
-            // Read data from file
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            String line;
-            // Read line by line
-            while ((line = br.readLine()) != null) {
-                fileContent.add(line);
-            }
+        List<String> fileContent = new ArrayList<String>();
 
-            br.close();
-        } catch (Exception e) {
+        // Check if file exists
+        if (file.exists()) {
+            try {
+                // Read data from file
+                BufferedReader br = new BufferedReader(new FileReader(path));
+                String line;
+                // Read line by line
+                while ((line = br.readLine()) != null) {
+                    fileContent.add(line);
+                }
+
+                br.close();
+            } catch (Exception e) {
+                if (UI.getIsDebug()) 
+                    e.printStackTrace();
+            }
+        } else {
             if (UI.getIsDebug()) 
-                e.printStackTrace();
+                System.out.println("Read every line failed, file doesn't exist! " + path);
         }
+
         return fileContent;
     }
 

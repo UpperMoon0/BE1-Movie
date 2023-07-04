@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import core.Ticket;
@@ -78,44 +79,42 @@ public class UserMenu extends Menu {
         // Get user input
         movie = InputManager.inputMovie();
         showtime = InputManager.inputShowtime();
-        seat = InputManager.inputSeat();
+        seat = InputManager.inputSeat(movie, showtime);
 
         Ticket ticket = new Ticket(UI.getCurrentAccount() ,movie, showtime, seat);
-        FileManager.writeToFile("data/ticketData", ticket.toString() + "\n");
+        FileManager.writeToFile("data/ticketData.txt", ticket.toString() + "\n");
         System.out.println("Ticket bought successfully!");
         System.out.println("------------------------");
     }
 
-    // Parse ticket
-    public static Ticket parseTicket(String ticketInformation) {
-        // Check ticket
-        String[] parts = ticketInformation.split(",");
-        String username = parts[0];
-        String movie = parts[1];
-        LocalDateTime showtime = LocalDateTime.parse(parts[2]);
-        String seat = parts[3];
-        Ticket ticket = new Ticket(username, movie, showtime, seat);
-        return ticket;
-    }
-
     // View ticket
     private static void viewTicket() {
-        // Read ticketData file
-        List<String> ticketData = FileManager.readEveryLines("data/ticketData");
-        // Check information of ticket's user
+        // Read ticketData.txt file
+        List<String> ticketData = FileManager.readEveryLine("data/ticketData.txt");
+        List<Ticket> myTickets = new ArrayList<Ticket>();
+
+        System.out.println("Your tickets:");
+
+        // Check if user has ticket and print them
         for (String ticketInformation : ticketData) {
-            Ticket ticket = parseTicket(ticketInformation);
-            // If the username of the current user matches the username of the ticket being processed, then print the ticket
+            Ticket ticket = Ticket.parseTicket(ticketInformation);
             if (ticket.getOwner().equals(UI.getCurrentAccount())) {
+                myTickets.add(ticket);
+                System.out.println("------------------------");
                 System.out.println("Owner: " + ticket.getOwner());
                 System.out.println("Movie: " + ticket.getMovie());
-                System.out.println("Showtime: " + ticket.getShowtime());
+                String minute = ticket.getShowtime().getMinute() < 10 ? "0" + ticket.getShowtime().getMinute() : ticket.getShowtime().getMinute() + ""; 
+                System.out.println("Showtime: " + ticket.getShowtime().getDayOfMonth() + "/" + ticket.getShowtime().getMonthValue() + "/" + ticket.getShowtime().getYear() + " " + ticket.getShowtime().getHour() + ":" + minute);
                 System.out.println("Seat: " + ticket.getSeat());
-                System.out.println("------------------------");
-            } else {
-                System.out.println("You didn't buy any ticket.");
-                System.out.println("------------------------");
-            } 
+            }
         }
+
+        // Check if user has no ticket
+        if (myTickets.size() == 0) {
+            System.out.println("------------------------");
+            System.out.println("You have no ticket!");
+        }
+
+        System.out.println("------------------------");
     }
 }
