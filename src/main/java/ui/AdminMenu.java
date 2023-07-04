@@ -1,8 +1,13 @@
 package ui;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import core.Movie;
 import util.FileManager;
@@ -31,7 +36,7 @@ public class AdminMenu extends Menu {
             case 2:
                 // Remove movie
                 System.out.println("------------------------");
-
+                removeMovie();
                 break;
             case 3:
                 // Change movie price
@@ -92,6 +97,28 @@ public class AdminMenu extends Menu {
             } else
                 System.out.println(UI.ANSI_RED + "Movie already exist, please try again!" + UI.ANSI_RESET);
         } while (true);
+    }
+
+    // Remove movie
+    public static void removeMovie() {
+        List<String> movieData = FileManager.readEveryLine("data/movieData.txt");
+        printMovieList();
+        System.out.println("Enter the number of movie you want to remove\n");
+        Scanner sc = new Scanner(System.in);
+        int movieNumber = sc.nextInt();
+
+        if (movieNumber >= 1 && movieNumber <= movieData.size()) {
+            movieData.remove(movieNumber - 1);
+            try {
+                String newData = String.join("\n", movieData);
+                Files.write(Paths.get("data/movieData.txt"), newData.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
+                System.out.println("Movie removed successfully!!!");
+            } catch (IOException e) {
+                System.out.println("Error writing to file.");
+            }
+        } else {
+            System.out.println("Invalid movie number!");
+        }
     }
 
     // Change movie price
