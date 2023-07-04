@@ -1,6 +1,7 @@
 package ui;
 
 import core.Admin;
+import core.User;
 import util.FileManager;
 import util.InputManager;
 
@@ -23,6 +24,7 @@ public class AdminLoginMenu extends Menu{
                 // Login
                 if (login()) {
                     System.out.println("------------------------");
+                    AdminMenu.menu();
                     chooseSuccess = true;
                 }
                 break;
@@ -60,13 +62,13 @@ public class AdminLoginMenu extends Menu{
     private static boolean login() {
         // Get username and password
         String 
-            username = InputManager.inputString("Enter your username:"),
-            password = InputManager.inputString("Enter your password:");
+            username = InputManager.inputUsername(),
+            password = InputManager.inputPassword();
 
-        Admin admin = new Admin(username, password);
+        User user = new User(username, password);
         
         // Check if username and password match
-        if (FileManager.checkUsernamePasswordMatch(admin.toString())) {
+        if (FileManager.checkUsernamePasswordMatch(user.toString())) {
             System.out.println("Login successful!");
             UI.setCurrentAccount(username);
             return true;
