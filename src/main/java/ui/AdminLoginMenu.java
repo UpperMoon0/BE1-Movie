@@ -32,6 +32,7 @@ public class AdminLoginMenu extends Menu{
                 // Register
                 System.out.println("------------------------");
                 register();
+                AdminMenu.menu();
                 chooseSuccess = true;
                 break;
             case 3:
@@ -68,12 +69,13 @@ public class AdminLoginMenu extends Menu{
         User user = new User(username, password);
         
         // Check if username and password match
-        if (FileManager.checkUsernamePasswordMatch(user.toString())) {
+        if (FileManager.checkUsernamePasswordMatch(user.toString(), true)) {
             System.out.println("Login successful!");
             UI.setCurrentAccount(username);
             return true;
         } else {
             System.out.println("Username or password is incorrect!");
+            System.out.println("------------------------");
         }
 
         return false;
@@ -91,9 +93,9 @@ public class AdminLoginMenu extends Menu{
             username = InputManager.inputUsername();
 
             // Check if username already exists
-            if (FileManager.checkUsernameExist(username))
+            if (FileManager.checkUsernameExist(username, true))
                 System.out.println("Username already exists, please try again!");
-        } while (FileManager.checkUsernameExist(username));
+        } while (FileManager.checkUsernameExist(username, true));
 
         // Get password
         password = InputManager.inputPassword();

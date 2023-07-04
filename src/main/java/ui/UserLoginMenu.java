@@ -69,12 +69,13 @@ public class UserLoginMenu extends Menu {
         User user = new User(username, password);
         
         // Check if username and password match
-        if (FileManager.checkUsernamePasswordMatch(user.toString())) {
+        if (FileManager.checkUsernamePasswordMatch(user.toString(), false)) {
             System.out.println("Login successful!");
             UI.setCurrentAccount(username);
             return true;
         } else {
             System.out.println("Username or password is incorrect!");
+            System.out.println("------------------------");
         }
 
         return false;
@@ -92,9 +93,9 @@ public class UserLoginMenu extends Menu {
             username = InputManager.inputUsername();
 
             // Check if username already exists
-            if (FileManager.checkUsernameExist(username))
+            if (FileManager.checkUsernameExist(username, false))
                 System.out.println("Username already exists, please try again!");
-        } while (FileManager.checkUsernameExist(username));
+        } while (FileManager.checkUsernameExist(username, false));
 
         // Get password
         password = InputManager.inputPassword();

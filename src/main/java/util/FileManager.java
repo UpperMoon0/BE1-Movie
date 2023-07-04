@@ -81,8 +81,13 @@ public class FileManager {
     }
 
     // Check if a username exists in a file
-    public static boolean checkUsernameExist(String username) {
-        String path = "data/userData.txt";
+    public static boolean checkUsernameExist(String username, boolean isAdmin) {
+        String path;
+        if (isAdmin)
+            path = "data/adminData.txt";
+        else
+            path = "data/userData.txt";
+            
         try {
             // Create the file if it doesn't exist
             createFileIfNotExist(path);
@@ -106,8 +111,13 @@ public class FileManager {
     }
 
     // Check if a user exists in a file
-    public static boolean checkUsernamePasswordMatch(String userData) {
-        String path = "data/userData.txt";
+    public static boolean checkUsernamePasswordMatch(String userData, boolean isAdmin) {
+        String path;
+        if (isAdmin)
+            path = "data/adminData.txt";
+        else
+            path = "data/userData.txt";
+
         try {
             // Create the file if it doesn't exist
             createFileIfNotExist(path);
