@@ -1,6 +1,8 @@
 package ui;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import core.Movie;
 import util.FileManager;
@@ -75,6 +77,7 @@ public class AdminMenu extends Menu {
 
     // Add a movie
     public static void addMovie() {
+        printMovieList();
         do {
             // Create movieData file if not exist
             FileManager.createMovieDataFileIfNotExist();
@@ -93,6 +96,7 @@ public class AdminMenu extends Menu {
 
     // Change movie price
     public static void changeMoviePrice() {
+        printMovieList();
         do {
             // Create movieData file if not exist
             FileManager.createMovieDataFileIfNotExist();
@@ -106,5 +110,20 @@ public class AdminMenu extends Menu {
             } else
                 System.out.println("Movie doesn't exist, please try again!");
         } while (true);
+    }
+
+    public static void printMovieList() {
+        // Get movies list
+        List<String> movieData = FileManager.readEveryLine("data/movieData.txt");
+
+        System.out.println("Movie list:");
+        int i = 1;
+        for (String data : movieData) {
+            if (data != null) {
+                String[] parts = data.split(",");
+                System.out.printf("%d. %s, price: %s VND%n", i, parts[0], parts[1]);
+                i++;
+            }
+        }
     }
 }
