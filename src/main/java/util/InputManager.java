@@ -1,11 +1,12 @@
 package util;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
+import java.time.temporal.TemporalAccessor;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -76,31 +77,19 @@ public class InputManager {
 
     // Get user input for choosing a movie
     public static String inputMovie() {
-        // Get movies list
-        List<Movie> moviesList = new ArrayList<Movie>();
-        List<String> movieData = FileManager.readEveryLine("data/movieData.txt");
-
-        System.out.println("Choose a movie:");
-        int i = 1;
-        for (String data : movieData) {
-            if (data != null) {
-                String[] parts = data.split(",");
-                moviesList.add(new Movie(parts[0], Integer.parseInt(parts[1])));
-                System.out.printf("%d. %s, price: %s VND\n", i, parts[0], parts[1]);
-                i++;
-            }
-        }
+        // Print movies list and get movies data
+        List<String> movieData = printMovieList();
 
         // Get user input
         System.out.println("Your choice:");
-        int inputInt;
 
         do {
             try {
                 UI.sc = new Scanner(System.in);
-                inputInt = UI.sc.nextInt();
-                if (inputInt > 0 && inputInt <= moviesList.size()) {
-                    return moviesList.get(inputInt - 1).getName();
+                int movieNumber = UI.sc.nextInt();
+                if (movieNumber > 0 && movieNumber <= movieData.size()) {
+                    String[] parts = movieData.get(movieNumber - 1).split(",");
+                    return parts[0];
                 } else {
                     System.out.println(UI.ANSI_RED + "Invalid choice, please try again!" + UI.ANSI_RESET);
                 }
@@ -110,11 +99,29 @@ public class InputManager {
         } while (true);
     }
 
+    // Print movies list and return movies data
+    public static List<String> printMovieList() {
+        // Get movies data
+        List<String> movieData = FileManager.readEveryLine("data/movieData.txt");
+
+        // Print movies list
+        System.out.println("Movie list:");
+        int i = 1;
+        for (String data : movieData) {
+            if (data != null) {
+                String[] parts = data.split(",");
+                System.out.printf("%d. %s, price: %s VND\n", i, parts[0], parts[1]);
+                i++;
+            }
+        }
+
+        return movieData;
+    }
 
     // Get user input for choosing a showtime
     public static LocalDateTime inputShowtime() {
-        String inputDate = "", inputTime;
-        LocalDateTime inputDateTime;
+        String inputDateTime;
+        LocalDateTime parsedDateTime;
 
         // Create formatter
         DateTimeFormatter formatter = new DateTimeFormatterBuilder()
@@ -135,48 +142,43 @@ public class InputManager {
         }
 
         while (true) {
-            // Input date
-            if (inputDate.isEmpty()) {
-                inputDate = inputString("Choose date:");
-            }
+            // Input date and time
+            inputDateTime = inputString("Choose date and time (day/month/year time):");
 
-            // Input time
-            inputTime = inputString("Choose showtime:");
-            
             // Check if input is valid
             try {
-                inputDateTime = LocalDateTime.parse(inputDate + " " + inputTime, formatter);
+                parsedDateTime = LocalDateTime.parse(inputDateTime, formatter);
 
-                if (!inputDateTime.isAfter(LocalDateTime.now())) {
+                if (!parsedDateTime.isAfter(LocalDateTime.now())) {
                     System.out.println(UI.ANSI_RED + "Showtime must be in the future, please try again!" + UI.ANSI_RESET);
-                    inputDate = "";
-                } else if (!Movie.getShowtimesList().contains(inputDateTime.toLocalTime())) {
+                } else if (!Movie.getShowtimesList().contains(parsedDateTime.toLocalTime())) {
                     System.out.println(UI.ANSI_RED + "Invalid showtime, please try again!" + UI.ANSI_RESET);
                 } else {
-                    return inputDateTime;
+                    return parsedDateTime;
                 }
             } catch (DateTimeParseException e) {
                 System.out.println(UI.ANSI_RED + "Invalid date or time format, please try again!" + UI.ANSI_RESET);
-                inputDate = "";
             }
         }
     }
 
-
     // Get user input for choosing a seat
     public static String inputSeat(String movie, LocalDateTime showtime) {
-        String inputStr;
+        String seat;
 
-        List<String> availableSeatsList = SeatMap.printSeatMap(movie, showtime);
+        // Print seat map and get available seat list
+        List<String> availableSeatList = SeatMap.printSeatMap(movie, showtime);
 
+        // Get user input
         do {
-            inputStr = inputString("Choose a seat:");
-            if (!availableSeatsList.contains(inputStr)) {
+            seat = inputString("Choose a seat:");
+            seat = seat.toUpperCase();
+            if (!availableSeatList.contains(seat)) {
                 System.out.println(UI.ANSI_RED + "Seat is not available, please try again!" + UI.ANSI_RESET);
             }
-        } while (!availableSeatsList.contains(inputStr));
+        } while (!availableSeatList.contains(seat));
 
-        return inputStr;
+        return seat;
     }
 
     // Get admin input for movie name

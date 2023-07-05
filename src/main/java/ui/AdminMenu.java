@@ -2,6 +2,7 @@ package ui;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Scanner;
 
 import core.Movie;
 import util.FileManager;
@@ -76,7 +77,7 @@ public class AdminMenu extends Menu {
 
     // Add a movie
     public static void addMovie() {
-        printMovieList();
+        InputManager.printMovieList();
         do {
             // Add movie to file
             Movie movie = new Movie(InputManager.inputMovieName(),
@@ -93,48 +94,47 @@ public class AdminMenu extends Menu {
 
     // Remove movie
     public static void removeMovie() {
-        printMovieList();
+        List<String> movieData = InputManager.printMovieList();
+
+        System.out.println("Please choose a movie number to remove:");
+
         do {
             // Remove movie
-            String movie = InputManager.inputMovieName();
-            if (FileManager.checkMovieExist(movie)) {
+            UI.sc = new Scanner(System.in);
+            int movieNumber = UI.sc.nextInt();
+            if (movieNumber > 0 && movieNumber <= movieData.size()) {
+                String[] parts = movieData.get(movieNumber - 1).split(",");
+                String movie = parts[0];
                 FileManager.removeMovie(movie);
                 System.out.println(UI.ANSI_GREEN + "Movie removed successfully!" + UI.ANSI_RESET);
                 System.out.println("------------------------");
                 break;
-            } else
-                System.out.println(UI.ANSI_RED + "Movie not found, please try again!" + UI.ANSI_RESET);
+            } else {
+                System.out.println(UI.ANSI_RED + "Invalid choice, please try again!" + UI.ANSI_RESET);
+            }
         } while (true);
     }
 
     // Change movie price
     public static void changeMoviePrice() {
-        printMovieList();
+        List<String> movieData = InputManager.printMovieList();
+
+        System.out.println("Please choose a movie number to change price:");
+
         do {
             // Change movie price
-            String movie = InputManager.inputMovieName();
-            if (FileManager.checkMovieExist(movie)) {
+            UI.sc = new Scanner(System.in);
+            int movieNumber = UI.sc.nextInt();
+            if (movieNumber > 0 && movieNumber <= movieData.size()) {
+                String[] parts = movieData.get(movieNumber - 1).split(",");
+                String movie = parts[0];
                 FileManager.changeMoviePrice(movie, InputManager.inputMoviePrice());
                 System.out.println(UI.ANSI_GREEN + "Movie price changed successfully!" + UI.ANSI_RESET);
                 System.out.println("------------------------");
                 break;
-            } else
-                System.out.println(UI.ANSI_RED + "Movie not found, please try again!" + UI.ANSI_RESET);
-        } while (true);
-    }
-
-    public static void printMovieList() {
-        // Get movies list
-        List<String> movieData = FileManager.readEveryLine("data/movieData.txt");
-
-        System.out.println("Movie list:");
-        int i = 1;
-        for (String data : movieData) {
-            if (data != null) {
-                String[] parts = data.split(",");
-                System.out.printf("%d. %s, price: %s VND\n", i, parts[0], parts[1]);
-                i++;
+            } else {
+                System.out.println(UI.ANSI_RED + "Invalid choice, please try again!" + UI.ANSI_RESET);
             }
-        }
+        } while (true);
     }
 }

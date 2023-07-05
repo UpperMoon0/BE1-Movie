@@ -14,13 +14,14 @@ public class UI {
     public static Scanner sc = new Scanner(System.in);
 
     // Set this to true to enable debug mode
-    private static final boolean isDebug = true;
+    private static final boolean isDebug = false;
 
     // Current account name
     private static String currentAccount;
     
     // Main function
     public static void main(String[] args) {   
+        clearScreen();
         FileManager.createMovieDataFileIfNotExist();    
         RoleMenu.menu();
         sc.close();
@@ -38,5 +39,16 @@ public class UI {
     // Setters
     public static void setCurrentAccount(String currentAccount) {
         UI.currentAccount = currentAccount;
+    }
+
+    // Clear screen
+    public static void clearScreen() {
+        try {
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        } catch (Exception e) {
+            if (isDebug) {
+                e.printStackTrace();
+            }
+        }
     }
 }

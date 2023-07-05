@@ -26,7 +26,7 @@ public class SeatMap {
             }
             System.out.println();
         }
-        return getAvailableSeats(movie);
+        return getAvailableSeat(movie);
     }
 
     // Filter ticket info
@@ -56,7 +56,7 @@ public class SeatMap {
     }
 
     // Get available seats
-    public static List<String> getAvailableSeats(String movie) {
+    public static List<String> getAvailableSeat(String movie) {
         List<String> availableSeatsList = new ArrayList<String>();
         // Get available seats
         for (char row = 'A'; row <= 'I'; row++) {

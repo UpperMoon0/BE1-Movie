@@ -6,3 +6,6 @@ Nhat2,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-07T20:00,D8
 Nhat2,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-07T18:00,A1
 Nhat1,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-08T20:00,A1
 Nhat1,Your name,2023-07-07T20:00,A2
+Nhat1,Joker,2023-08-04T12:00,A7
+Nhat1,Detective Conan: The Scarlet Bullet,2023-09-09T20:00,A9
+Nhat1,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-07T20:00,E6
