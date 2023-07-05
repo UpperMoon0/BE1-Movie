@@ -45,7 +45,7 @@ public class FileManager {
             bw.append(str);
         } catch (IOException e) {
             if (UI.getIsDebug())
-                    e.printStackTrace();
+                e.printStackTrace();
         }
     }
 
@@ -61,10 +61,10 @@ public class FileManager {
             }
         } catch (FileNotFoundException e) {
             if (UI.getIsDebug())
-                    e.printStackTrace();
+                e.printStackTrace();
         } catch (IOException e) {
             if (UI.getIsDebug())
-                    e.printStackTrace();
+                e.printStackTrace();
         }
 
         return fileContent;
@@ -87,7 +87,7 @@ public class FileManager {
             }
         } catch (IOException e) {
             if (UI.getIsDebug())
-                    e.printStackTrace();
+                e.printStackTrace();
         }
 
         return false;
@@ -109,7 +109,7 @@ public class FileManager {
             }
         } catch (IOException e) {
             if (UI.getIsDebug())
-                    e.printStackTrace();
+                e.printStackTrace();
         }
 
         return false;
@@ -176,6 +176,42 @@ public class FileManager {
         }
 
         return false;
+    }
+
+    // Remove movie
+    public static void removeMovie(String movie) {
+        String path = "data/movieData.txt";
+
+        // Create the file if it doesn't exist
+        createMovieDataFileIfNotExist();
+
+        List<String> fileContent = new ArrayList<>();
+
+        // Read the file
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                // Change the price of the movie
+                if (!parts[0].equals(movie)) {
+                    fileContent.add(line);
+                }
+            }
+        } catch (IOException e) {
+            if (UI.getIsDebug())
+                e.printStackTrace();
+        }
+
+        // Write to the file
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+            for (String str : fileContent) {
+                bw.write(str);
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            if (UI.getIsDebug())
+                e.printStackTrace();
+        }
     }
 
     // Change movie price

@@ -1,2 +1,8 @@
-ngoc,Your name,2023-07-22T22:00,A4
-ngoc,Your name,2023-07-22T22:00,I1
+Nhat1,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-07T20:00,A1
+Nhat1,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-07T20:00,A2
+Nhat1,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-07T20:00,B3
+Nhat1,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-07T20:00,A3
+Nhat2,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-07T20:00,D8
+Nhat2,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-07T18:00,A1
+Nhat1,Demon Slayer: Kimetsu no Yaiba the Movie: Mugen Train,2023-07-08T20:00,A1
+Nhat1,Your name,2023-07-07T20:00,A2

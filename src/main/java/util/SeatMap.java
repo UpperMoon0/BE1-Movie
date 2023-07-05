@@ -32,14 +32,17 @@ public class SeatMap {
     // Filter ticket info
     public static void filterTicketInfo(String movie, LocalDateTime showtime) {
         List<String> filteredTicketInfo = new ArrayList<String>();
-        for (String ticket : ticketInfo) {
-            String[] parts = ticket.split(",");
-            if (parts[1].equals(movie) && parts[2].equals(showtime.toString())) {
-                filteredTicketInfo.add(ticket);
+        if (ticketInfo != null) {
+            for (String ticket : ticketInfo) {
+                String[] parts = ticket.split(",");
+                if (parts.length >= 3 && parts[1].equals(movie) && parts[2].equals(showtime.toString())) {
+                    filteredTicketInfo.add(ticket);
+                }
             }
         }
         ticketInfo = filteredTicketInfo;
     }
+
 
     // Check if a seat is available
     public static boolean checkSeat(String seat) {

@@ -1,13 +1,7 @@
 package ui;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import core.Movie;
 import util.FileManager;
@@ -84,8 +78,6 @@ public class AdminMenu extends Menu {
     public static void addMovie() {
         printMovieList();
         do {
-            // Create movieData file if not exist
-            FileManager.createMovieDataFileIfNotExist();
             // Add movie to file
             Movie movie = new Movie(InputManager.inputMovieName(),
                                     InputManager.inputMoviePrice());
@@ -99,16 +91,30 @@ public class AdminMenu extends Menu {
         } while (true);
     }
 
+    // Remove movie
+    public static void removeMovie() {
+        printMovieList();
+        do {
+            // Remove movie
+            String movie = InputManager.inputMovieName();
+            if (FileManager.checkMovieExist(movie)) {
+                FileManager.removeMovie(movie);
+                System.out.println(UI.ANSI_GREEN + "Movie removed successfully!" + UI.ANSI_RESET);
+                System.out.println("------------------------");
+                break;
+            } else
+                System.out.println(UI.ANSI_RED + "Movie not found, please try again!" + UI.ANSI_RESET);
+        } while (true);
+    }
+
     // Change movie price
     public static void changeMoviePrice() {
         printMovieList();
         do {
-            // Create movieData file if not exist
-            FileManager.createMovieDataFileIfNotExist();
             // Change movie price
-            String movieName = InputManager.inputMovieName();
-            if (FileManager.checkMovieExist(movieName)) {
-                FileManager.changeMoviePrice(movieName, InputManager.inputMoviePrice());
+            String movie = InputManager.inputMovieName();
+            if (FileManager.checkMovieExist(movie)) {
+                FileManager.changeMoviePrice(movie, InputManager.inputMoviePrice());
                 System.out.println(UI.ANSI_GREEN + "Movie price changed successfully!" + UI.ANSI_RESET);
                 System.out.println("------------------------");
                 break;
@@ -126,32 +132,9 @@ public class AdminMenu extends Menu {
         for (String data : movieData) {
             if (data != null) {
                 String[] parts = data.split(",");
-                System.out.printf("%d. %s, price: %s VND%n", i, parts[0], parts[1]);
+                System.out.printf("%d. %s, price: %s VND\n", i, parts[0], parts[1]);
                 i++;
             }
-        }
-    }
-
-    // Remove movie
-    public static void removeMovie() {
-        List<String> movieData = FileManager.readEveryLine("data/movieData.txt");
-        printMovieList();
-        System.out.println("Enter the number of movie you want to remove\n");
-        Scanner sc = new Scanner(System.in);
-        int movieNumber = sc.nextInt();
-        // Remove movie
-        if (movieNumber >= 1 && movieNumber <= movieData.size()) {
-            movieData.remove(movieNumber - 1);
-            try {
-                String newData = String.join("\n", movieData);
-                // Write data to file with TRUNGCATE_EXISTING
-                Files.write(Paths.get("data/movieData.txt"), newData.getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
-                System.out.println("Movie removed successfully!!!");
-            } catch (IOException e) {
-                System.out.println("Error writing to file.");
-            }
-        } else {
-            System.out.println("Invalid movie number!");
         }
     }
 }

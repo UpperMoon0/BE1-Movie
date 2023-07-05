@@ -3,7 +3,10 @@ package util;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -73,7 +76,6 @@ public class InputManager {
 
     // Get user input for choosing a movie
     public static String inputMovie() {
-        FileManager.createMovieDataFileIfNotExist();
         // Get movies list
         List<Movie> moviesList = new ArrayList<Movie>();
         List<String> movieData = FileManager.readEveryLine("data/movieData.txt");
@@ -84,7 +86,7 @@ public class InputManager {
             if (data != null) {
                 String[] parts = data.split(",");
                 moviesList.add(new Movie(parts[0], Integer.parseInt(parts[1])));
-                System.out.printf("%d. %s, price: %s VND%n", i, parts[0], parts[1]);
+                System.out.printf("%d. %s, price: %s VND\n", i, parts[0], parts[1]);
                 i++;
             }
         }
@@ -102,7 +104,7 @@ public class InputManager {
                 } else {
                     System.out.println(UI.ANSI_RED + "Invalid choice, please try again!" + UI.ANSI_RESET);
                 }
-            } catch (Exception e) {
+            } catch (InputMismatchException e) {
                 System.out.println(UI.ANSI_RED + "Invalid choice, please try again!" + UI.ANSI_RESET);
             }
         } while (true);
@@ -111,40 +113,53 @@ public class InputManager {
 
     // Get user input for choosing a showtime
     public static LocalDateTime inputShowtime() {
-        String inputDate,
-            inputTime;
-
+        String inputDate = "", inputTime;
         LocalDateTime inputDateTime;
 
-        System.out.println("Choose a showtime:");
+        // Create formatter
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+                .appendOptional(DateTimeFormatter.ofPattern("d/M/yyyy H:mm"))
+                .appendOptional(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                .appendOptional(DateTimeFormatter.ofPattern("dd/M/yyyy H:mm"))
+                .appendOptional(DateTimeFormatter.ofPattern("d/MM/yyyy HH:mm"))
+                .appendOptional(DateTimeFormatter.ofPattern("d/M/yyyy H"))
+                .appendOptional(DateTimeFormatter.ofPattern("dd/MM/yyyy HH"))
+                .appendOptional(DateTimeFormatter.ofPattern("dd/M/yyyy H"))
+                .appendOptional(DateTimeFormatter.ofPattern("d/MM/yyyy HH"))
+                .toFormatter();
 
-        do {
+        // Show all available showtimes
+        System.out.println("Available showtimes:");
+        for (LocalTime showtime : Movie.getShowtimesList()) {
+            System.out.printf("%s\n", showtime);
+        }
+
+        while (true) {
             // Input date
-            inputDate = inputString("Date (dd/MM/yyyy):");
-
-            // Show all available showtimes, input time
-            System.out.println("Time (HH:mm):");
-            for (LocalTime showtime : Movie.getShowtimesList()) {
-                System.out.printf("%s%n", showtime);
+            if (inputDate.isEmpty()) {
+                inputDate = inputString("Choose date:");
             }
-            inputTime = inputString("Your choice:");
 
+            // Input time
+            inputTime = inputString("Choose showtime:");
+            
             // Check if input is valid
             try {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
                 inputDateTime = LocalDateTime.parse(inputDate + " " + inputTime, formatter);
 
                 if (!inputDateTime.isAfter(LocalDateTime.now())) {
                     System.out.println(UI.ANSI_RED + "Showtime must be in the future, please try again!" + UI.ANSI_RESET);
+                    inputDate = "";
                 } else if (!Movie.getShowtimesList().contains(inputDateTime.toLocalTime())) {
                     System.out.println(UI.ANSI_RED + "Invalid showtime, please try again!" + UI.ANSI_RESET);
                 } else {
                     return inputDateTime;
                 }
-            } catch (Exception e) {
-                System.out.println(UI.ANSI_RED + "Invalid showtime, please try again!" + UI.ANSI_RESET);
+            } catch (DateTimeParseException e) {
+                System.out.println(UI.ANSI_RED + "Invalid date or time format, please try again!" + UI.ANSI_RESET);
+                inputDate = "";
             }
-        } while (true);
+        }
     }
 
 
@@ -167,14 +182,14 @@ public class InputManager {
     // Get admin input for movie name
     public static String inputMovieName() {
         String inputStr;
-        String regex = "^[a-zA-Z0-9\\s]+$";
+        String regex = "^[^,]+$";
 
         do {
             inputStr = inputString("Enter the movie name:");
             if (!inputStr.matches(regex)) {
                 System.out.println(UI.ANSI_RED + 
                     "Movie name must:\n" +
-                    "- Not contain any special characters\n" +
+                    "- Not contain any comma character (,)\n" +
                     "Please try again!" +
                     UI.ANSI_RESET);
             }
@@ -195,7 +210,7 @@ public class InputManager {
                 } else {
                     System.out.println(UI.ANSI_RED + "Invalid price, please try again!" + UI.ANSI_RESET);
                 }
-            } catch (Exception e) {
+            } catch (NumberFormatException e) {
                 System.out.println(UI.ANSI_RED + "Invalid price, please try again!" + UI.ANSI_RESET);
             }
         } while (true);
